@@ -2,12 +2,14 @@
 {
     public class FormTemplateRequest
     {
-        public IFormFile Attachment { get; set; }
+        public int Id { get; set; }
+
+        public string Description { get; set; }
+        
+        public string HtmlContent { get; set; }
 
         public string FormType { get; set; }
 
         public bool IsActive { get; set; }
-
-
     }
 }

@@ -1,4 +1,7 @@
-﻿using EmailFormFormatProject.Server.Repository;
+﻿using Azure.Core;
+using EmailFormFormatProject.Server.Database.Model;
+using EmailFormFormatProject.Server.Model;
+using EmailFormFormatProject.Server.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,35 +20,65 @@ namespace EmailFormFormatProject.Server.Controllers
             _repo = repo;
         }
 
-
         [HttpGet("search/all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return Ok();
+            var result = await _repo.GetAll<FormTemplate>();
+            return Ok(result);
         }
 
-        [HttpGet("search/{id}")]
-        public IActionResult GetById(int Id)
+        [HttpGet("search/")]
+        public IActionResult GetById(int request)
         {
-            return Ok();
+            if (request < 0) return Ok(new ResultResponse(false, "", new { title = "request", message = "Request is null. Kindly contact helpdesk and request assistance from them." }));
+
+            var result = _repo.GetByExpression<FormTemplate>(s => s.Id == request);
+            return Ok(request);
         }
 
         [HttpPost("create/")]
-        public IActionResult Post()
+        public IActionResult Post(FormTemplateRequest request)
         {
-            return Ok();
+            if (request == null) return Ok(new ResultResponse(false, "", new { title = "request", message = "Request is null. Kindly contact helpdesk and request assistance from them." }));
+
+            var formTemplate = new FormTemplate { 
+                Name = request.Description,
+                Template = request.HtmlContent,
+                IsActive = request.IsActive,
+                UploadDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
+            };
+
+            var result = _repo.Insert(formTemplate);
+            return Ok(result);
         }
 
         [HttpPut("edit/")]
-        public IActionResult Put()
+        public IActionResult Put(FormTemplateRequest request)
         {
-            return Ok();
+            if (request == null) return Ok(new ResultResponse(false, "", new { title = "request", message = "Request is empty. Kindly contact helpdesk and request assistance from them." }));
+
+            var formTemplate = new FormTemplate
+            {
+                Id = request.Id,
+                Name = request.Description,
+                Template = request.HtmlContent,
+                IsActive = request.IsActive,
+                UploadDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
+            };
+
+            var result = _repo.Update(formTemplate);
+            return Ok(request);
         }
 
         [HttpDelete("delete/")]
-        public IActionResult Delete()
+        public IActionResult Delete(int request)
         {
-            return Ok();
+            if (request < 0) return Ok(new ResultResponse(false, "", new { title = "request", message = "Request is empty. Kindly contact helpdesk and request assistance from them." }));
+
+            var result = _repo.Delete(request);
+            return Ok(request);
         }
     }
 }
