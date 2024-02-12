@@ -1,5 +1,0 @@
-
-<!--login page-->
-<template>
-
-</template>

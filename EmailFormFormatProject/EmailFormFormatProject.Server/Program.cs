@@ -1,4 +1,7 @@
 
+using EmailFormFormatProject.Server.Database;
+using EmailFormFormatProject.Server.Repository;
+
 namespace EmailFormFormatProject.Server
 {
     public class Program
@@ -6,6 +9,7 @@ namespace EmailFormFormatProject.Server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = builder.Configuration;
 
             // Add services to the container.
 
@@ -13,6 +17,10 @@ namespace EmailFormFormatProject.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSqlServer<DatabaseContext>(configuration.GetConnectionString("DbConnection"));
+            builder.Services.AddScoped<LoginRepositories>();
+            builder.Services.AddScoped<FileFormatRepositories>();
 
             var app = builder.Build();
 
