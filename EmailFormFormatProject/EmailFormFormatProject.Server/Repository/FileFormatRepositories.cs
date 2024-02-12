@@ -21,7 +21,7 @@ namespace EmailFormFormatProject.Server.Repository
         public async Task<ResultResponse> GetAll<T>(Expression<Func<FormTemplate, bool>>? expression = null)
         {
             List<FormTemplate> templates = [];
-            IQueryable<FormTemplate> query = _db.FormTemplates.AsQueryable();
+            IQueryable<FormTemplate> query = _db.FormTemplates.AsNoTracking().AsQueryable();
 
             if(query == null)
             {
@@ -49,7 +49,7 @@ namespace EmailFormFormatProject.Server.Repository
         public async Task<ResultResponse> GetByExpression<T>(Expression<Func<FormTemplate, bool>> expression)
         {
             FormTemplate template = new();
-            IQueryable<FormTemplate> query = _db.FormTemplates.AsQueryable();
+            IQueryable<FormTemplate> query = _db.FormTemplates.AsNoTracking().AsQueryable();
             if (query == null)
                 return new ResultResponse(false, "", new { title = "record", message = "NO DATA" });
 

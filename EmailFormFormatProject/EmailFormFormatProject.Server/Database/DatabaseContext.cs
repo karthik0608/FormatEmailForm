@@ -8,5 +8,7 @@ namespace EmailFormFormatProject.Server.Database
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         public DbSet<FormTemplate> FormTemplates { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
     }
 }
