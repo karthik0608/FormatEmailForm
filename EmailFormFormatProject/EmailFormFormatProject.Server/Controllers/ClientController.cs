@@ -30,6 +30,7 @@ namespace EmailFormFormatProject.Server.Controllers
                 CreatedBy = 0,
                 CreatedDate = DateTime.Now,
                 DeliveryDate = request.DeliveryDate,
+                Email = request.Email,
                 SKU = request.SKU,
                 ImprintColor = request.ImprintColor,
                 ImprintLocation = request.ImprintLocation,
